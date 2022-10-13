@@ -1,0 +1,39 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+ROLLUP?=rollup
+ROLLUP_FIRST?=$(ROLLUP)
+
+MAKE_STAGED_DIR=set -e;mkdir -p $1;cp -r src $1;cp -r test $1;cp -r bin $1;cp package.json $1;cp rollup.config.js $1;cp rollup.create-config.js $1
+
+SRC_SRC=$(shell find src -name '*' | LC_ALL=C sort)
+SRC_BIN=$(shell find bin -name '*' | LC_ALL=C sort)
+SRC_ALL=$(SRC_SRC) $(SRC_BIN) package.json rollup.config.js rollup.create-config.js
+
+stage1/build.stamp: $(SRC_ALL)
+	$(call MAKE_STAGED_DIR,$(dir $@))
+	cd $(dir $@) && $(ROLLUP_ENV) $(ROLLUP_FIRST) -c
+	chmod +x $(dir $@)/bin/buble
+	touch $@
+
+stage2/build.stamp: stage1/build.stamp
+	$(call MAKE_STAGED_DIR,$(dir $@))
+	mkdir -p $(dir $@)/node_modules
+	ln -s stage1/ $(dir $@)/node_modules/buble
+	cd $(dir $@) && $(ROLLUP_ENV) $(ROLLUP) -c
+	chmod +x $(dir $@)/bin/buble
+	touch $@
+
+stage3/build.stamp: stage2/build.stamp
+	$(call MAKE_STAGED_DIR,$(dir $@))
+	mkdir -p $(dir $@)/node_modules
+	ln -s stage2/ $(dir $@)/node_modules/buble
+	cd $(dir $@) && $(ROLLUP_ENV) $(ROLLUP) -c
+	chmod +x $(dir $@)/bin/buble
+	cp -af $(dir $@)/dist .
+	cp -af $(dir $@)/bin .
+	rm -rf stage*
+
+override_dh_auto_build: stage3/build.stamp

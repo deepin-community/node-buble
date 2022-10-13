@@ -1,0 +1,169 @@
+node-buble (0.20.0+~0.20.1-1) unstable; urgency=medium
+
+  * Fix d/watch.
+  * Bump standards-version to 4.6.0.
+  * New upstream release.
+
+ -- Julien Puydt <jpuydt@debian.org>  Sat, 04 Sep 2021 22:41:28 +0200
+
+node-buble (0.20.0+~0.19.2-3) unstable; urgency=medium
+
+  * Team Upload
+  * Switch back to modern @rollup/plugin-json (remove patch)
+
+ -- Pirate Praveen <praveen@debian.org>  Mon, 04 Jan 2021 00:45:12 +0530
+
+node-buble (0.20.0+~0.19.2-2) unstable; urgency=medium
+
+  * Team Upload
+  * Drop legacy node-resolve and commonjs plugins
+  * Bump Standards-Version to 4.5.1 (no changes needed)
+  * Add versions for resolve and commonjs in d/control
+
+ -- Abraham Raji <avronr@tuta.io>  Tue, 29 Dec 2020 22:00:32 +0000
+
+node-buble (0.20.0+~0.19.2-1) unstable; urgency=medium
+
+  * Team upload
+  * Bump debhelper compatibility level to 13
+  * Use dh-sequence-nodejs
+  * Embed @types/buble
+
+ -- Xavier Guimard <yadd@debian.org>  Sun, 04 Oct 2020 14:24:57 +0200
+
+node-buble (0.20.0-1) unstable; urgency=medium
+
+  * Team upload
+
+  [ Julien Puydt ]
+  * New upstream release.
+  * Remove the os_homedir_is_useless patch : upstreamed.
+  * Partially refresh the remaining patches (WIP).
+
+  [ Xavier Guimard ]
+  * Remove fix_magic_string_0.25.7.patch
+  * Add patch to fix rollup libraries
+  * Build using babel7
+
+ -- Xavier Guimard <yadd@debian.org>  Sat, 09 May 2020 08:58:46 +0200
+
+node-buble (0.19.8-8) unstable; urgency=medium
+
+  * Team upload
+  * increase mocha timeout to 20 seconds (Closes: #956376)
+
+ -- Xavier Guimard <yadd@debian.org>  Fri, 10 Apr 2020 15:06:54 +0200
+
+node-buble (0.19.8-7) unstable; urgency=medium
+
+  * Team upload
+  * Remove also node-acorn-dynamic-import from binary dependency
+
+ -- Xavier Guimard <yadd@debian.org>  Sat, 21 Mar 2020 10:11:41 +0100
+
+node-buble (0.19.8-6) unstable; urgency=medium
+
+  * Team upload
+  * Remove bad dependency to node-acorn-jsx
+  * remove useless lintian overrides
+
+ -- Xavier Guimard <yadd@debian.org>  Tue, 17 Mar 2020 12:12:41 +0100
+
+node-buble (0.19.8-5) unstable; urgency=medium
+
+  * Add patch to work with node-magic-string (>= 0.25.7).
+
+ -- Julien Puydt <jpuydt@debian.org>  Mon, 16 Mar 2020 10:12:43 +0100
+
+node-buble (0.19.8-4) unstable; urgency=medium
+
+  * Team upload
+  * Fix repository
+  * Declare compliance with policy 4.5.0
+  * Add "Rules-Requires-Root: no"
+  * Update lintian overrides
+  * Update homepage
+  * Add upstream/metadata
+  * Use pkg-js-tools auto test & install
+  * Refresh patches
+  * Use debhelper-compat
+
+ -- Xavier Guimard <yadd@debian.org>  Sat, 14 Mar 2020 09:33:39 +0100
+
+node-buble (0.19.8-3) unstable; urgency=medium
+
+  * Break only with rollup <<0.68.2+ds~
+
+ -- Bastien Roucariès <rouca@debian.org>  Sat, 22 Feb 2020 16:40:28 +0100
+
+node-buble (0.19.8-2) unstable; urgency=medium
+
+  * Team upload
+  * Upload to unstable
+  * Do not run buble on buble in order to break loop
+
+ -- Bastien Roucariès <rouca@debian.org>  Sat, 22 Feb 2020 02:12:34 +0100
+
+node-buble (0.19.8-1) experimental; urgency=medium
+
+  * Team upload
+
+  [ Julien Puydt ]
+  * New upstream release (Closes: #942170).
+  * Bump std-vers to 4.4.0.
+  * Refresh patch.
+  * Add patch to remove browser bundling.
+
+  [ Xavier Guimard ]
+  * Bump debhelper compatibility level to 12
+  * Add debian/gbp.conf
+  * Move installed files to /usr/share/nodejs
+
+  [ Pirate Praveen ]
+  * Disable tests during build (tests need node-acorn from experimental, but
+    build needs node-acorn from unstable)
+  * Update dependencies (node-acorn >= 6.0 and Breaks rollup << 1.0)
+  * Exclude .eslintrc from bin in debian/install
+
+ -- Pirate Praveen <praveen@debian.org>  Fri, 11 Oct 2019 22:48:48 +0530
+
+node-buble (0.19.4-3) unstable; urgency=high
+
+  * Team upload
+  * Bug fix: "autopkgtest regression", thanks to Paul Gevers (Closes:
+    #918635).
+
+ -- Bastien Roucariès <rouca@debian.org>  Mon, 07 Jan 2019 22:41:04 +0100
+
+node-buble (0.19.4-2) unstable; urgency=medium
+
+  * Team upload
+  * Use rollup for compiling. Staged build in order
+    to avoid compilation loop.
+  * Test using mocha
+
+ -- Bastien Roucariès <rouca@debian.org>  Mon, 31 Dec 2018 20:52:51 +0100
+
+node-buble (0.19.4-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Refresh packaging:
+    - Point Vcs-* fields to salsa.
+    - Use my debian.org mail address.
+    - Bump dh compat to 11.
+    - Bump std-ver to 4.2.1.
+    - Refresh patch.
+
+ -- Julien Puydt <jpuydt@debian.org>  Wed, 10 Oct 2018 17:10:54 +0200
+
+node-buble (0.19.3-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Julien Puydt <julien.puydt@laposte.net>  Wed, 21 Feb 2018 18:22:15 +0100
+
+node-buble (0.18.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #872638)
+
+ -- Julien Puydt <julien.puydt@laposte.net>  Sat, 04 Nov 2017 09:52:16 +0100

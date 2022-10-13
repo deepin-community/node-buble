@@ -1,0 +1,16 @@
+Description: Disable_umd
+--- a/rollup.config.js
++++ b/rollup.config.js
+@@ -17,12 +17,6 @@
+ 			{ format: 'cjs', file: pkg.browser[pkg.main] }
+ 		],
+ 	}),
+-	/* UMD with bundled dependencies, ready for browsers */
+-	createConfig({
+-		browser: true,
+-		external: [],
+-		output: { format: 'umd', file: pkg.unpkg },
+-	}),
+ ];
+ 
+ export default configs;

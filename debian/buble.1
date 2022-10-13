@@ -1,0 +1,71 @@
+.TH BUBLÉ "1" "September 2017" "Bublé version 0.15.2" "User Commands"
+.SH NAME
+.B Bublé
+\- Fast ES2015 compiler for Node.js
+.SH SYNOPSIS
+.B buble
+[\fI\,options\/\fR] \fI\,<inputfile>\/\fR
+.SH DESCRIPTION
+Bublé is a ES2015 compiler : it will turn ES6 javascript code into           
+Javascript that can run in older ES5 environments. Notice that not all       
+of ES6 is supported, either because they give size or performance issues     
+or because they can't be transpiled to ES5.
+.SH OPTIONS
+.PP
+\fB\-v\fR, \fB\-\-version\fR
+Show version number
+
+\fB\-h\fR, \fB\-\-help\fR
+Show this help message
+\fB\-i\fR, \fB\-\-input\fR
+Input (alternative to <entry file>)
+
+\fB\-o\fR, \fB\-\-output\fR <output>
+Output (if absent, prints to stdout)
+
+\fB\-m\fR, \fB\-\-sourcemap\fR
+Generate sourcemap (`\-m inline` for inline map)
+
+\fB\-t\fR, \fB\-\-target\fR
+Select compilation targets
+
+\fB\-y\fR, \fB\-\-yes\fR
+Transforms to always apply (overrides \fB\-\-target\fR)
+
+\fB\-n\fR, \fB\-\-no\fR
+Transforms to always skip (overrides \fB\-\-target\fR)
+
+\fB\-\-jsx\fR
+Custom JSX pragma
+
+\fB\-\-objectAssign\fR
+Specify Object.assign or equivalent polyfill
+
+\fB\-\-no\-named\-function\-expr\fR
+Don't output named function expressions
+
+.SH EXAMPLES
+# Compile input.js to output.js
+buble input.js > output.js
+.PP
+# Compile input.js to output.js, write sourcemap to output.js.map
+buble input.js \-o output.js \-m
+.PP
+# Compile input.js to output.js with inline sourcemap
+buble input.js \-o output.js \-m inline
+.PP
+# Only use transforms necessary for output.js to run in FF43 and Node 5
+buble input.js \-o output.js \-t firefox:43,node:5
+.PP
+# As above, but use arrow function and destructuring transforms
+buble input.js \-o output.js \-t firefox:43,node:5 \-y arrow,destructuring
+.PP
+# Compile all the files in src/ to dest/
+buble src \-o dest
+.PP
+Notes:
+.PP
+* When piping to stdout, only inline sourcemaps are permitted
+.PP
+.SH "SEE ALSO"
+For more information visit http://buble.surge.sh/guide

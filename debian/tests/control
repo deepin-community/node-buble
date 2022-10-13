@@ -1,0 +1,5 @@
+Tests: compile-self
+Depends: @
+ , @builddeps@
+ , make
+Restrictions: allow-stderr

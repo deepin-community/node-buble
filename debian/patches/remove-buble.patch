@@ -1,0 +1,26 @@
+Description: Remove buble
+--- node-buble.orig/rollup.create-config.js
++++ node-buble/rollup.create-config.js
+@@ -1,4 +1,4 @@
+-import buble from '@rollup/plugin-buble';
++//import buble from '@rollup/plugin-buble';
+ import json from '@rollup/plugin-json';
+ import resolve from '@rollup/plugin-node-resolve';
+ import commonjs from '@rollup/plugin-commonjs';
+@@ -22,6 +22,7 @@
+ 		plugins: [
+ 			json(),
+ 			commonjs({ extensions: ['.js', '.mjs'] }),
++			/*
+ 			buble({
+ 				target: !browser ? { node: 4 } : null,
+ 				include: [
+@@ -35,7 +36,7 @@
+ 				transforms: {
+ 					dangerousForOf: true
+ 				}
+-			}),
++			}),*/
+ 			resolve()
+ 		],
+ 	};

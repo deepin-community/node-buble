@@ -1,0 +1,10 @@
+version=4
+opts=\
+dversionmangle=s/\+(debian|dfsg|ds|deb)(\.\d+)?$//,\
+filenamemangle=s/.*\/v?([\d\.-]+)\.tar\.gz/node-buble-$1.tar.gz/ \
+ https://github.com/bublejs/buble/tags .*/v?([\d\.]+).tar.gz group
+
+# It is not recommended use npmregistry. Please investigate more.
+# Take a look at https://wiki.debian.org/debian/watch/
+opts="searchmode=plain,ctype=nodejs,component=typesbuble,pgpmode=none" \
+ https://registry.npmjs.org/@types/buble https://registry.npmjs.org/@types/buble/-/buble-([\d\.]+)@ARCHIVE_EXT@ group

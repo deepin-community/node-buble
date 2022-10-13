@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+  - "stable"
+  - "8"
+
+env:
+  global:
+    - BUILD_TIMEOUT=10000
+
+script:
+  - npm run test:register
+  - if [ $TRAVIS_NODE_VERSION -eq 8 ]; then
+      set -e;
+      npm run lint;
+      node_modules/.bin/acorn --ecma3 dist/buble-browser.cjs.js > /dev/null;
+      node_modules/.bin/acorn --ecma3 dist/buble-browser-deps.umd.js > /dev/null;
+      node_modules/.bin/acorn --ecma3 register.js > /dev/null;
+      npm run test:bundlers;
+    fi
+  - node scripts/run_test262.js

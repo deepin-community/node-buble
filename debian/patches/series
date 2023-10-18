@@ -1,2 +1,9 @@
 disable_umd.patch
-remove-buble.patch
+fix-test-for-regexpu-core-5.patch
+dont-use-__proto__.patch
+fix-for-rollup-3.patch
+#remove-buble.patch
+drop-some-tests.patch
+build-complete-cjs-files.patch
+replace-buble-by-babel.patch
+fix-for-magic-string-0.30.patch

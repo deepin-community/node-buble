@@ -1,0 +1,44 @@
+Description: fix for rollup 3
+Author: Yadd <yadd@debian.org>
+Bug-Debian: https://bugs.debian.org/1022682
+Forwarded: not-needed
+Last-Update: 2022-11-02
+
+--- a/rollup.config.js
++++ b/rollup.config.js
+@@ -1,5 +1,5 @@
+-import createConfig from './rollup.create-config';
+-import pkg from './package.json';
++const createConfig = require('./rollup.create-config');
++const pkg = require('./package.json');
+ 
+ const configs = [
+ 	/* node ESM/CJS builds */
+@@ -19,4 +19,4 @@
+ 	}),
+ ];
+ 
+-export default configs;
++module.exports = configs;
+--- a/rollup.create-config.js
++++ b/rollup.create-config.js
+@@ -1,8 +1,8 @@
+-import buble from '@rollup/plugin-buble';
+-import json from '@rollup/plugin-json';
+-import resolve from '@rollup/plugin-node-resolve';
+-import commonjs from '@rollup/plugin-commonjs';
+-import pkg from './package.json';
++const buble = require('@rollup/plugin-buble');
++const json = require('@rollup/plugin-json');
++const resolve = require('@rollup/plugin-node-resolve').nodeResolve;
++const commonjs = require('@rollup/plugin-commonjs');
++const pkg = require('./package.json');
+ 
+ const ensureArray = maybeArr => Array.isArray(maybeArr) ? maybeArr : [maybeArr];
+ 
+@@ -41,4 +41,4 @@
+ 	};
+ };
+ 
+-export default createConfig;
++module.exports = createConfig;

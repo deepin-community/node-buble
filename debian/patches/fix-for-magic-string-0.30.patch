@@ -1,0 +1,16 @@
+Description: fix fro magic-string >= 0.30
+Author: Yadd <yadd@debian.org>
+Forwarded: not-needed
+Last-Update: 2023-08-13
+
+--- a/test/test.js
++++ b/test/test.js
+@@ -231,7 +231,7 @@
+ 				includeContent: false
+ 			}).map;
+ 
+-			assert.deepEqual(map.sourcesContent, [null]);
++			assert.deepEqual(map.sourcesContent, undefined);
+ 		});
+ 
+ 		it('locates original content', () => {

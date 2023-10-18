@@ -5,21 +5,23 @@ Section: javascript
 Testsuite: autopkgtest-pkg-nodejs
 Priority: optional
 Build-Depends: debhelper-compat (= 13)
- , mocha (>= 4)
- , node-acorn (>= 6~)
+ , dh-sequence-nodejs
+ , mocha
+ , node-acorn
  , node-babel7
  , node-chalk
  , node-console-group
- , node-magic-string (>= 0.25.7)
+ , node-magic-string (>= 0.30)
  , node-minimist
  , node-regexpu-core
  , node-rimraf
- , node-rollup-plugin-commonjs (>= 15~)
- , node-rollup-plugin-json (>= 4.1~)
- , node-rollup-plugin-node-resolve (>= 9~)
- , dh-sequence-nodejs
+ , node-rollup-plugin-babel
+ , node-rollup-plugin-commonjs
+ , node-rollup-plugin-json
+ , node-rollup-plugin-node-resolve
+ , quilt
  , rollup
-Standards-Version: 4.6.0
+Standards-Version: 4.6.2
 Vcs-Browser: https://salsa.debian.org/js-team/node-buble
 Vcs-Git: https://salsa.debian.org/js-team/node-buble.git
 Homepage: https://github.com/bublejs/buble
@@ -28,13 +30,12 @@ Rules-Requires-Root: no
 Package: node-buble
 Architecture: all
 Depends: ${misc:Depends}
- , node-acorn (>= 6.0~)
+ , node-acorn
  , node-chalk
  , node-magic-string
  , node-minimist
  , node-regexpu-core
- , nodejs (>= 10)
-Breaks: rollup (<< 0.68.2+ds~)
+ , nodejs:any
 Provides: ${nodejs:Provides}
 Description: Fast ES2015 compiler for Node.js
  Bublé is a ES2015 compiler : it will turn ES6 javascript code into
@@ -47,3 +48,4 @@ Description: Fast ES2015 compiler for Node.js
  for instance by Firefox 4.
  .
  Node.js is an event-based server-side JavaScript engine.
+XB-Javascript-Built-Using: ${nodejs:BuiltUsing}

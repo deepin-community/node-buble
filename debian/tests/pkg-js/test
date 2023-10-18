@@ -1,1 +1,2 @@
+node -e 'require("./dist/buble.cjs.js")'
 mocha --timeout 20000

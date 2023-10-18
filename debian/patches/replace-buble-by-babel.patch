@@ -1,0 +1,33 @@
+Description: replace @rollup/plugin-buble by @rollup/plugin-babel
+Author: Yadd <yadd@debian.org>
+Forwarded: not-needed
+Last-Update: 2022-11-02
+
+--- a/rollup.create-config.js
++++ b/rollup.create-config.js
+@@ -1,4 +1,4 @@
+-const buble = require('@rollup/plugin-buble');
++const babel = require('@rollup/plugin-babel');
+ const json = require('@rollup/plugin-json');
+ const resolve = require('@rollup/plugin-node-resolve').nodeResolve;
+ const commonjs = require('@rollup/plugin-commonjs');
+@@ -21,8 +21,7 @@
+ 		plugins: [
+ 			json(),
+ 			commonjs({ extensions: ['.js', '.mjs'] }),
+-			buble({
+-				target: !browser ? { node: 4 } : null,
++			babel({
+ 				include: [
+ 					'src/**',
+ 					// For unpkg build
+@@ -31,9 +30,6 @@
+ 					'node_modules/unicode-match-property-ecmascript/**',
+ 					'node_modules/unicode-match-property-value-ecmascript/**',
+ 				],
+-				transforms: {
+-					dangerousForOf: true
+-				}
+ 			}),
+ 			resolve({
+         modulePaths: ['/usr/share/nodejs','node_modules'],

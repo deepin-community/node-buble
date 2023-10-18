@@ -1,5 +1,6 @@
 Tests: compile-self
 Depends: @
  , @builddeps@
+ , node-rollup-plugin-buble
  , make
 Restrictions: allow-stderr

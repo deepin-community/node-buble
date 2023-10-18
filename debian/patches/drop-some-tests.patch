@@ -1,0 +1,17 @@
+Description: drop test incompatible with new acorn
+Author: Yadd <yadd@debian.org>
+Forwarded: no
+Last-Update: 2022-11-02
+
+--- a/test/samples/dynamic-import.js
++++ /dev/null
+@@ -1,9 +0,0 @@
+-module.exports = [
+-	{
+-		description: 'support dynamic import',
+-		options: { transforms: { moduleImport: false } },
+-		input: `import('./module.js')`,
+-		output: `import('./module.js')`
+-	}
+-
+-];

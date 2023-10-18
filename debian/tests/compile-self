@@ -1,4 +1,5 @@
 #!/bin/sh
 set -e
 
+patch -R -p1 <debian/patches/replace-buble-by-babel.patch
 make -f debian/rules stage3/build.stamp

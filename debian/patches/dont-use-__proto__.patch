@@ -1,0 +1,367 @@
+Description: don't use __proto__
+Author: Yadd <yadd@debian.org>
+Forwarded: https://github.com/bublejs/buble/pull/282
+Last-Update: 2022-09-14
+
+--- a/src/program/Program.js
++++ b/src/program/Program.js
+@@ -17,7 +17,7 @@
+ 	this.depth = 0;
+ 
+ 	wrap((this.body = ast), this);
+-	this.body.__proto__ = BlockStatement.prototype;
++	Object.setPrototypeOf(this.body, BlockStatement.prototype);
+ 
+ 	this.templateLiteralQuasis = Object.create(null);
+ 	for (let i = 0; i < this.body.body.length; ++i) {
+--- a/src/program/types/ClassBody.js
++++ b/src/program/types/ClassBody.js
+@@ -56,9 +56,9 @@
+ 				this.parent.superClass ||
+ 				this.parent.type !== 'ClassDeclaration';
+ 			if (this.parent.superClass) {
+-				let inheritanceBlock = `if ( ${superName} ) ${name}.__proto__ = ${
++				let inheritanceBlock = `if ( ${superName} ) Object.setPrototypeOf(${name}, ${
+ 					superName
+-				};\n${i0}${name}.prototype = Object.create( ${superName} && ${
++				});\n${i0}${name}.prototype = Object.create( ${superName} && ${
+ 					superName
+ 				}.prototype );\n${i0}${name}.prototype.constructor = ${name};`;
+ 
+--- a/src/program/wrap.js
++++ b/src/program/wrap.js
+@@ -64,5 +64,5 @@
+ 
+ 	const type =
+ 		(raw.type === 'BlockStatement' ? BlockStatement : types[raw.type]) || Node;
+-	raw.__proto__ = type.prototype;
++	Object.setPrototypeOf(raw, type.prototype);
+ }
+--- a/test/samples/classes-no-named-function-expressions.js
++++ b/test/samples/classes-no-named-function-expressions.js
+@@ -128,7 +128,7 @@
+ 					Bar.apply(this, arguments);
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -163,7 +163,7 @@
+ 					this.y = 'z';
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -201,7 +201,7 @@
+ 					Bar.apply(this, arguments);
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -273,7 +273,7 @@
+ 					Bar.apply(this, arguments);
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -305,7 +305,7 @@
+ 					Bar.apply(this, arguments);
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -523,7 +523,7 @@
+ 					this.radius = radius;
+ 				}
+ 
+-				if ( Shape ) Circle.__proto__ = Shape;
++				if ( Shape ) Object.setPrototypeOf(Circle, Shape);
+ 				Circle.prototype = Object.create( Shape && Shape.prototype );
+ 				Circle.prototype.constructor = Circle;
+ 
+@@ -596,7 +596,7 @@
+ 					superclass.apply(this, arguments);
+ 				}
+ 
+-				if ( superclass ) b.__proto__ = superclass;
++				if ( superclass ) Object.setPrototypeOf(b, superclass);
+ 				b.prototype = Object.create( superclass && superclass.prototype );
+ 				b.prototype.constructor = b;
+ 
+@@ -629,7 +629,7 @@
+ 					superclass.apply(this, arguments);
+ 				}
+ 
+-				if ( superclass ) b.__proto__ = superclass;
++				if ( superclass ) Object.setPrototypeOf(b, superclass);
+ 				b.prototype = Object.create( superclass && superclass.prototype );
+ 				b.prototype.constructor = b;
+ 
+@@ -656,7 +656,7 @@
+ 					superclass.call(this);
+ 				}
+ 
+-				if ( superclass ) b.__proto__ = superclass;
++				if ( superclass ) Object.setPrototypeOf(b, superclass);
+ 				b.prototype = Object.create( superclass && superclass.prototype );
+ 				b.prototype.constructor = b;
+ 
+@@ -681,7 +681,7 @@
+ 					SuperClass.call(this);
+ 				}
+ 
+-				if ( SuperClass ) SubClass.__proto__ = SuperClass;
++				if ( SuperClass ) Object.setPrototypeOf(SubClass, SuperClass);
+ 				SubClass.prototype = Object.create( SuperClass && SuperClass.prototype );
+ 				SubClass.prototype.constructor = SubClass;
+ 
+@@ -756,7 +756,7 @@
+ 					Bar.apply(this, arguments);
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -807,7 +807,7 @@
+ 					D.apply(this, arguments);
+ 				}
+ 
+-				if ( D ) C.__proto__ = D;
++				if ( D ) Object.setPrototypeOf(C, D);
+ 				C.prototype = Object.create( D && D.prototype );
+ 				C.prototype.constructor = C;
+ 
+@@ -821,7 +821,7 @@
+ 					F.apply(this, arguments);
+ 				}
+ 
+-				if ( F ) E.__proto__ = F;
++				if ( F ) Object.setPrototypeOf(E, F);
+ 				E.prototype = Object.create( F && F.prototype );
+ 				E.prototype.constructor = E;
+ 
+@@ -940,7 +940,7 @@
+ 					render();
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -972,7 +972,7 @@
+ 					SuperClass.apply( this, args );
+ 				}
+ 
+-				if ( SuperClass ) SubClass.__proto__ = SuperClass;
++				if ( SuperClass ) Object.setPrototypeOf(SubClass, SuperClass);
+ 				SubClass.prototype = Object.create( SuperClass && SuperClass.prototype );
+ 				SubClass.prototype.constructor = SubClass;
+ 
+@@ -1000,7 +1000,7 @@
+ 					SuperClass.apply( this, [ 1 ].concat( args, [2] ) );
+ 				}
+ 
+-				if ( SuperClass ) SubClass.__proto__ = SuperClass;
++				if ( SuperClass ) Object.setPrototypeOf(SubClass, SuperClass);
+ 				SubClass.prototype = Object.create( SuperClass && SuperClass.prototype );
+ 				SubClass.prototype.constructor = SubClass;
+ 
+@@ -1135,7 +1135,7 @@
+ 					});
+ 				}
+ 
+-				if ( B ) A.__proto__ = B;
++				if ( B ) Object.setPrototypeOf(A, B);
+ 				A.prototype = Object.create( B && B.prototype );
+ 				A.prototype.constructor = A;
+ 
+--- a/test/samples/classes.js
++++ b/test/samples/classes.js
+@@ -122,7 +122,7 @@
+ 					Bar.apply(this, arguments);
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -156,7 +156,7 @@
+ 					this.y = 'z';
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -193,7 +193,7 @@
+ 					Bar.apply(this, arguments);
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -259,7 +259,7 @@
+ 					Bar.apply(this, arguments);
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -288,7 +288,7 @@
+ 					Bar.apply(this, arguments);
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -521,7 +521,7 @@
+ 					this.radius = radius;
+ 				}
+ 
+-				if ( Shape ) Circle.__proto__ = Shape;
++				if ( Shape ) Object.setPrototypeOf(Circle, Shape);
+ 				Circle.prototype = Object.create( Shape && Shape.prototype );
+ 				Circle.prototype.constructor = Circle;
+ 
+@@ -590,7 +590,7 @@
+ 					superclass.apply(this, arguments);
+ 				}
+ 
+-				if ( superclass ) b.__proto__ = superclass;
++				if ( superclass ) Object.setPrototypeOf(b, superclass);
+ 				b.prototype = Object.create( superclass && superclass.prototype );
+ 				b.prototype.constructor = b;
+ 
+@@ -622,7 +622,7 @@
+ 					superclass.apply(this, arguments);
+ 				}
+ 
+-				if ( superclass ) b.__proto__ = superclass;
++				if ( superclass ) Object.setPrototypeOf(b, superclass);
+ 				b.prototype = Object.create( superclass && superclass.prototype );
+ 				b.prototype.constructor = b;
+ 
+@@ -648,7 +648,7 @@
+ 					superclass.call(this);
+ 				}
+ 
+-				if ( superclass ) b.__proto__ = superclass;
++				if ( superclass ) Object.setPrototypeOf(b, superclass);
+ 				b.prototype = Object.create( superclass && superclass.prototype );
+ 				b.prototype.constructor = b;
+ 
+@@ -672,7 +672,7 @@
+ 					SuperClass.call(this);
+ 				}
+ 
+-				if ( SuperClass ) SubClass.__proto__ = SuperClass;
++				if ( SuperClass ) Object.setPrototypeOf(SubClass, SuperClass);
+ 				SubClass.prototype = Object.create( SuperClass && SuperClass.prototype );
+ 				SubClass.prototype.constructor = SubClass;
+ 
+@@ -744,7 +744,7 @@
+ 					Bar.apply(this, arguments);
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -794,7 +794,7 @@
+ 					D.apply(this, arguments);
+ 				}
+ 
+-				if ( D ) C.__proto__ = D;
++				if ( D ) Object.setPrototypeOf(C, D);
+ 				C.prototype = Object.create( D && D.prototype );
+ 				C.prototype.constructor = C;
+ 
+@@ -808,7 +808,7 @@
+ 					F.apply(this, arguments);
+ 				}
+ 
+-				if ( F ) E.__proto__ = F;
++				if ( F ) Object.setPrototypeOf(E, F);
+ 				E.prototype = Object.create( F && F.prototype );
+ 				E.prototype.constructor = E;
+ 
+@@ -924,7 +924,7 @@
+ 					render();
+ 				}
+ 
+-				if ( Bar ) Foo.__proto__ = Bar;
++				if ( Bar ) Object.setPrototypeOf(Foo, Bar);
+ 				Foo.prototype = Object.create( Bar && Bar.prototype );
+ 				Foo.prototype.constructor = Foo;
+ 
+@@ -955,7 +955,7 @@
+ 					SuperClass.apply( this, args );
+ 				}
+ 
+-				if ( SuperClass ) SubClass.__proto__ = SuperClass;
++				if ( SuperClass ) Object.setPrototypeOf(SubClass, SuperClass);
+ 				SubClass.prototype = Object.create( SuperClass && SuperClass.prototype );
+ 				SubClass.prototype.constructor = SubClass;
+ 
+@@ -982,7 +982,7 @@
+ 					SuperClass.apply( this, [ 1 ].concat( args, [2] ) );
+ 				}
+ 
+-				if ( SuperClass ) SubClass.__proto__ = SuperClass;
++				if ( SuperClass ) Object.setPrototypeOf(SubClass, SuperClass);
+ 				SubClass.prototype = Object.create( SuperClass && SuperClass.prototype );
+ 				SubClass.prototype.constructor = SubClass;
+ 
+@@ -1111,7 +1111,7 @@
+ 					});
+ 				}
+ 
+-				if ( B ) A.__proto__ = B;
++				if ( B ) Object.setPrototypeOf(A, B);
+ 				A.prototype = Object.create( B && B.prototype );
+ 				A.prototype.constructor = A;
+ 
+@@ -1238,7 +1238,7 @@
+ 			A = /*@__PURE__*/(function (A$1) {
+ 				function A () {
+ 					A$1.apply(this, arguments);
+-				}if ( A$1 ) A.__proto__ = A$1;
++				}if ( A$1 ) Object.setPrototypeOf(A, A$1);
+ 				A.prototype = Object.create( A$1 && A$1.prototype );
+ 				A.prototype.constructor = A;
+ 
+@@ -1260,7 +1260,7 @@
+ 			var f = function (b) { return /*@__PURE__*/(function (b) {
+ 					function a () {
+ 						b.apply(this, arguments);
+-					}if ( b ) a.__proto__ = b;
++					}if ( b ) Object.setPrototypeOf(a, b);
+ 					a.prototype = Object.create( b && b.prototype );
+ 					a.prototype.constructor = a;
+ 

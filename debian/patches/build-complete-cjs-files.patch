@@ -1,0 +1,68 @@
+Description: include dependencies in CJS build
+Author: Yadd <yadd@debian.org>
+Forwarded: not-needed
+Last-Update: 2022-11-02
+
+--- a/rollup.config.js
++++ b/rollup.config.js
+@@ -6,16 +6,27 @@
+ 	createConfig({
+ 		output: [
+ 			{ format: 'es', file: pkg.module },
+-			{ format: 'cjs', file: pkg.main }
+ 		],
+ 	}),
++  createConfig({
++    output: [
++			{ format: 'cjs', file: pkg.main },
++    ],
++    noExternal: true,
++  }),
+ 	/* browser ESM/CJS builds (for bundlers) */
+ 	createConfig({
+ 		browser: true,
+ 		output: [
+ 			{ format: 'es', file: pkg.browser[pkg.module] },
++		],
++	}),
++	createConfig({
++		browser: true,
++		output: [
+ 			{ format: 'cjs', file: pkg.browser[pkg.main] }
+ 		],
++    noExternal: true,
+ 	}),
+ ];
+ 
+--- a/rollup.create-config.js
++++ b/rollup.create-config.js
+@@ -12,13 +12,12 @@
+ 	const external = opts.external || Object.keys(pkg.dependencies || {});
+ 	const output = ensureArray(opts.output);
+ 
+-	return {
++	const res = {
+ 		input: 'src/index.js',
+ 		output: output.map(format => Object.assign({}, format, {
+ 			name: 'buble',
+ 			sourcemap: true
+ 		})),
+-		external: external,
+ 		plugins: [
+ 			json(),
+ 			commonjs({ extensions: ['.js', '.mjs'] }),
+@@ -36,9 +35,13 @@
+ 					dangerousForOf: true
+ 				}
+ 			}),
+-			resolve()
++			resolve({
++        modulePaths: ['/usr/share/nodejs','node_modules'],
++      })
+ 		],
+ 	};
++  if (!opts.noExternal) res.external= external;
++  return res;
+ };
+ 
+ module.exports = createConfig;
